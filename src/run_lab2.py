@@ -59,10 +59,10 @@ summary = {
         "max_lon": bbox[2],
         "max_lat": bbox[3],
     },
-    "counts_per_tag": point_set.counts_by_tag(), #optional
+     "counts_per_tag": point_set.get_tag_counts(), #(optional)
 }
 
-with open(REPORT_PATH, "w", encoding="utf-8") as f:
+with open(SUMMARY_PATH, "w", encoding="utf-8") as f:
     json.dump(summary, f, indent=2)
 
-print(f"\nSaved report to: {REPORT_PATH}")
+print(f"\nSaved report to: {SUMMARY_PATH}")
