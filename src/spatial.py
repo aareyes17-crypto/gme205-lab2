@@ -68,5 +68,48 @@ class Point:
     
     def is_poi(self):
         return (self.tag or "").lower() == "poi"
-        
     
+    #-------------------------------------------------------------------------
+    # Part C.Designing a Spatial Collection: PointSet
+    #-------------------------------------------------------------------------
+
+import csv
+class PointSet:
+    def __init__(self, points):
+        self.points = points
+    
+    @classmethod
+    def from_csv(cls, path):
+        """
+        Reads CSV and returns a PointSet
+        """
+        points = []
+        with open(path, newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    points.append(Point.from_row(row))
+                except ValueError:
+                    continue
+        return cls(points)
+
+    def count(self):
+        """
+        Return the number of points in the set
+        """
+        return len(self.points)
+
+    def bbox(self):
+        """
+        Returns (min_lon, min_lat, max_lon, max_lat)
+        """
+        lons = [p.lon for p in self.points]
+        lats = [p.lat for p in self.points]
+        return min(lons), min(lats), max(lons), max(lats)
+
+    def filter_by_tag(self, tag):
+        """
+        Returns a new PointSet filtered by tag without mutating original
+        """
+        return PointSet([p for p in self.points if p.tag == tag])
+       
